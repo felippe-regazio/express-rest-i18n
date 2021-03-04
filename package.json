@@ -1,0 +1,24 @@
+{
+  "name": "express-rest-i18n",
+  "version": "1.0.0",
+  "description": "Dead simple i18n middleware for Express REST APIs",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/felippe-regazio/express-rest-i18n.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/felippe-regazio/express-rest-i18n/issues",
+    "dev": "parcel ./pkg/index.js"
+  },
+  "homepage": "https://github.com/felippe-regazio/express-rest-i18n#readme",
+  "devDependencies": {
+    "parcel-bundler": "^1.12.4"
+  }
+}
