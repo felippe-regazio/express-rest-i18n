@@ -4,9 +4,9 @@
   "description": "Dead simple i18n middleware for Express REST APIs",
   "main": "index.js",
   "scripts": {
+    "test": "jest",
     "dev": "parcel ./src/index.js --target node",
-    "build": "parcel build ./src/index.js --target node",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "parcel build ./src/index.js --target node"
   },
   "repository": {
     "type": "git",
@@ -20,6 +20,8 @@
   },
   "homepage": "https://github.com/felippe-regazio/express-rest-i18n#readme",
   "devDependencies": {
+    "express": "^4.17.1",
+    "jest": "^26.6.3",
     "parcel-bundler": "^1.12.3"
   }
 }
