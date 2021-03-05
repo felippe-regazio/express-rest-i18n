@@ -4,6 +4,8 @@
   "description": "Dead simple i18n middleware for Express REST APIs",
   "main": "index.js",
   "scripts": {
+    "dev": "parcel ./src/index.js --target node",
+    "build": "parcel build ./src/index.js --target node",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -14,11 +16,10 @@
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/felippe-regazio/express-rest-i18n/issues",
-    "dev": "parcel ./pkg/index.js"
+    "url": "https://github.com/felippe-regazio/express-rest-i18n/issues"
   },
   "homepage": "https://github.com/felippe-regazio/express-rest-i18n#readme",
   "devDependencies": {
-    "parcel-bundler": "^1.12.4"
+    "parcel-bundler": "^1.12.3"
   }
 }
