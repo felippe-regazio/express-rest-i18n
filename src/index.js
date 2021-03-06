@@ -12,7 +12,7 @@ module.exports = function i18n (options = {}) {
       throw new Error('i18n: Invalid options arguments.');
     }
 
-    if (typeof options.messages !== 'object' || !Object.keys(messages)) {
+    if (typeof options.messages !== 'object' || !Object.keys(options.messages)) {
       throw new Error('i18n: Messages must be a valid object.');
     }
 
@@ -25,6 +25,7 @@ module.exports = function i18n (options = {}) {
     }
 
     const defaults = {
+      warn: false,
       requestReadLocaleFrom: {
         header: 'application-language',
         query: 'locale',
@@ -43,32 +44,40 @@ module.exports = function i18n (options = {}) {
     return _options.defaultLocale;
   }
 
+  function warn (msg) {
+    _options.warn && console.warn(msg);
+  }
+
   function translate (keyref, locale = getDefaultLocale()) {
     if (!keyref || typeof keyref !== 'string' || keyref.trim().includes(' ')) {
       return keyref;
     }
     
-    const translated = objectValueFromStr(`${locale}.${keyref}`, _options.messages);
-    const doFallback = !translated && locale !== getDefaultLocale();
+    const keypath = `${locale}.${keyref}`;
+    const translated = objectValueFromStr(keypath, _options.messages);
+    const doFallback = translated && translated === keypath && locale !== getDefaultLocale();
   
-    return doFallback ? translateDefault(keyref) : (translated || keyref);
+    if (doFallback) {
+      return translateDefault(keyref);
+    } else {
+      return translated && typeof translated === 'string' ? translated : keyref;
+    }
   }
   
   function translateDefault (keyref) {
-    console.warn(`i18n: key "${locale}.${keyref}" retrieved from default locale as fallback.`);
+    warn(`i18n: key "${locale}.${keyref}" retrieved from default locale as fallback.`);
     
     return translate(keyref);
   }
 
   function objectValueFromStr(strKey, obj) {
     let val = undefined;
-
     try {
       val = strKey
         .split('.')
         .reduce((o, i) => o[i], obj);
     } catch (err) {
-      console.error(err);
+      warn(`i18n: Failed to translate "${strKey}"`);
     };
 
     return val;
