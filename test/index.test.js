@@ -1,5 +1,7 @@
-const i18nCreate = require('../dist/');
+const supertest = require('supertest');
+const i18nCreate = require('../src/');
 const messages = require('./messages.js');
+const app = require('./server.js');
 
 // ------------------------------------------
 
@@ -84,3 +86,29 @@ test('Test translatable values on i18n.t() outside the request', () => {
   expect(i18n.t('nested.secondLevel', 'en')).toBe('nested.secondLevel');
   expect(i18n.t('nested.secondLevel.msg', 'en')).toBe('Second level');  
 });
+
+test('Test fallback locale', () => {
+  expect(i18n.t('fallbackPtBr', 'en')).toBe('Fallback pt-br ok!');
+  i18n.setOptions({ defaultLocale: 'en' });
+  expect(i18n.t('fallbackEn', 'pt-br')).toBe('Fallback en ok!');
+  i18n.setOptions({ defaultLocale: 'pt-br', allowFallback: false });
+  expect(i18n.t('fallbackPtBr', 'en')).toBe('fallbackPtBr');
+  i18n.setOptions({ defaultLocale: 'en' });
+  expect(i18n.t('fallbackEn', 'pt-br')).toBe('fallbackEn');
+});
+
+/* test('Test i18n middleware GET tradution', () => {
+  const promises = [];
+  
+  const ptBrTranslations = {
+    'test': 'Teste',
+    'existentKey': 'Chave existente',
+    'nested.msg': 'Primeiro nível',
+    'nested.msg.secondLevel.msg': 'Segundo nível'
+  }
+
+  Object.keys(ptBrTranslations).forEach(key => {
+    promises.push(supertest(app).get(`/test?translate=${key}`));
+  });
+});
+ */

@@ -26,6 +26,7 @@ module.exports = function i18n (options = {}) {
 
     const defaults = {
       warn: false,
+      allowFallback: true,
       requestReadLocaleFrom: {
         header: 'application-language',
         query: 'locale',
@@ -55,17 +56,17 @@ module.exports = function i18n (options = {}) {
     
     const keypath = `${locale}.${keyref}`;
     const translated = objectValueFromStr(keypath, _options.messages);
-    const doFallback = translated && translated === keypath && locale !== getDefaultLocale();
-  
-    if (doFallback) {
-      return translateDefault(keyref);
+    const doFallback = !translated && locale !== getDefaultLocale();
+
+    if (doFallback && _options.allowFallback === true) {
+      return translateFallback(keyref);
     } else {
       return translated && typeof translated === 'string' ? translated : keyref;
     }
   }
   
-  function translateDefault (keyref) {
-    warn(`i18n: key "${locale}.${keyref}" retrieved from default locale as fallback.`);
+  function translateFallback (keyref) {
+    warn(`i18n: key "${keyref}" retrieved from default locale as fallback.`);
     
     return translate(keyref);
   }
