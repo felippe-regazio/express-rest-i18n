@@ -266,3 +266,7 @@ npm run build
 ```
 npm run test
 ```
+
+***
+
+Express Rest i18n by Felippe Regazio
