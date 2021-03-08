@@ -1,8 +1,23 @@
 {
   "name": "express-rest-i18n",
   "version": "1.0.0",
+  "license": "GPL",
+  "author": "Felippe Regazio",
   "description": "Dead simple i18n middleware for Express REST APIs",
   "main": "index.js",
+  "files": [
+    "dist/"
+  ],
+  "keywords": [
+    "express",
+    "i18n",
+    "internationalization",
+    "internationalize",
+    "translation",
+    "translate",
+    "rest",
+    "api",
+  ],
   "scripts": {
     "test": "jest",
     "dev": "parcel ./src/index.js --target node",
