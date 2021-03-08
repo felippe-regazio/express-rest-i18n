@@ -1,7 +1,6 @@
-const supertest = require('supertest');
 const i18nCreate = require('../src/');
 const messages = require('./messages.js');
-const app = require('./server.js');
+const assertRequests = require('./assert-requests.js');
 
 // ------------------------------------------
 
@@ -97,18 +96,99 @@ test('Test fallback locale', () => {
   expect(i18n.t('fallbackEn', 'pt-br')).toBe('fallbackEn');
 });
 
-/* test('Test i18n middleware GET tradution', () => {
-  const promises = [];
-  
-  const ptBrTranslations = {
-    'test': 'Teste',
-    'existentKey': 'Chave existente',
-    'nested.msg': 'Primeiro nível',
-    'nested.msg.secondLevel.msg': 'Segundo nível'
-  }
+// ------------------------------------------
 
-  Object.keys(ptBrTranslations).forEach(key => {
-    promises.push(supertest(app).get(`/test?translate=${key}`));
+const ptBrAsserts = {
+  'test': 'Teste',
+  'existentKey': 'Chave existente',
+  'nested.msg': 'Primeiro nível',
+  'nested.secondLevel.msg': 'Segundo nível',
+  '': '',
+  '1': '1',
+  'non.existent.key': 'non.existent.key',
+  'translation with spaces': 'translation with spaces',
+  '12983719873981729319823': '12983719873981729319823',
+  'translation//@': 'translation//@',
+};
+
+const enAsserts = {
+  ... ptBrAsserts,
+  ...{
+    'test': 'Test',
+    'existentKey': 'Existent key',
+    'nested.msg': 'First level',
+    'nested.secondLevel.msg': 'Second level',
+  }
+};
+
+test('Test i18n middleware GET with default Locale', async done => {
+  await assertRequests({
+    method: 'get',
+    assert: ptBrAsserts,
+    each: (returned, expected) => {
+      expect(returned).toEqual(expected);
+    }
   });
+
+  done();
 });
- */
+
+test('Test i18n middleware POST with default locale', async done => {
+  await assertRequests({
+    method: 'post',
+    assert: ptBrAsserts,
+    each: (returned, expected) => {
+      expect(returned).toEqual(expected);
+    }
+  });
+
+  done();
+});
+
+test('Test i18n middleware GET/POST with setted locale on headers to non-default "en"', async done => {
+  await assertRequests({
+    method: 'get',
+    localeHeader: 'en', 
+    assert: enAsserts,
+    each: (returned, expected) => {
+      expect(returned).toEqual(expected);
+    }
+  });
+
+  await assertRequests({
+    method: 'post',
+    localeHeader: 'en',
+    assert: enAsserts,
+    each: (returned, expected) => {
+      expect(returned).toEqual(expected);
+    }
+  });
+
+  done();
+});
+
+test('Test i18n middleware GET with setted locale on query to non-default "en"', async done => {
+  await assertRequests({
+    method: 'get',
+    query: 'locale=en',
+    assert: enAsserts,
+    each: (returned, expected) => {
+      expect(returned).toEqual(expected);
+    }
+  });
+
+  done();
+});
+
+test('Test i18n middleware POST with setted locale on body to non-default "en"', async done => {
+  await assertRequests({
+    method: 'post',
+    data: { locale: 'en' },
+    assert: enAsserts,
+    each: (returned, expected) => {
+      expect(returned).toEqual(expected);
+    }
+  });
+
+  done();
+});

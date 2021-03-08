@@ -88,10 +88,12 @@ module.exports = function i18n (options = {}) {
     const opt = _options.requestReadLocaleFrom;
     
     let locale = req.headers[opt.header];
-    let searchOnReq = [ `body.${opt.body}`, `query.${opt.query}` ];
+    
+    if (!locale) {
+      const fromQuery = objectValueFromStr(`query.${opt.query}`, req);
+      const fromBody = objectValueFromStr(`body.${opt.query}`, req);
 
-    while(!locale || searchOnReq.length) {
-      locale = objectValueFromStr(searchOnReq.pop(), req);
+      locale = fromQuery || fromBody;
     }
 
     return locale;
@@ -103,8 +105,8 @@ module.exports = function i18n (options = {}) {
     const i18nApi = {
       locale,
 
-      t(keyref, locale) {
-        return translate(keyref, locale);
+      t(keyref, _locale = locale) {
+        return translate(keyref, _locale);
       }
     };
   
