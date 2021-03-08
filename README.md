@@ -19,7 +19,7 @@ You can also create a module that exports you instance, if you prefer.
 const i18nCreate = require('express-rest-i18n');
 
 const i18n = i18nCreate({
-  defaultLocale: 'pt-br',
+  defaultLocale: 'en',
   warn: false, // optional
   allowFallback: true, // optional
   messages: {
@@ -108,6 +108,60 @@ app.get('*', (req, res) => {
 });
 ```
 
+#### Nesting
+
+You can specify nested paths to translate from your messages
+
+```js
+i18n.t('nested.world'); // will output "World"
+```
+
+#### Side cases
+
+When a key is not found on the given or default locale, or the argument passed is not a string,
+the t() method will return the argument untouched:
+
+```js
+i18n.t('non.existing.key'); // will output "non.existing.key"
+i18n.t({ test: "test"});  // will output object { test: "test"}
+```
+
+# Messages
+
+Your `messages` are passed to the `i18n instance` using the `messages` key on options.
+A common approach is to put the messages in a separated file. In the messages object, 
+the first key level is the locale, and the nested keys are the messages. Example:
+
+```js
+// messages.js file
+module.exports = {
+  'en': { // locale
+    hello: 'Hello',
+    nested: {
+      world: 'World'
+    }
+  },
+
+  'pt-br': { // locale
+    hello: 'Olá',
+    nested: {
+      world: 'Mundo'
+    }
+  }
+}
+```
+
+Then on your instance creation:
+
+```js
+const message = require('./messages.js');
+
+const i18n = i18nCreate({
+  messages: messages,
+  defaultLocale: 'pt-br'
+});
+```
+
 # Locales
 
 If you dont pass any locale, your `defaultLocale` will be used as the translation language. Anyway, you can specify a locale to your API in 3 different ways. When specifying the locale on your request you dont need to do anything server-side, the `i18n.t()` will automatically handle the response using the locale passed via request.
@@ -155,44 +209,61 @@ The `defaultLocale` will be used as a fallback when you:
 2. Pass a locale that doesn't exists on your `messages`
 3. Pass a `key` to be translated which doesn\'t exists on the current locale (not the default)
 
-# Usage
+# Options
 
-#### Messages
+You can pass the following options to the instance:
 
-Your `messages` are passed to the `i18n instance` using the `messages` key on options.
-A common approach is to put the messages in a separated file. In the messages object, 
-the first key level is the locale, and the nested keys are the messages. Example:
-
-```js
-// messages.js file
-module.exports = {
-  'en': { // locale
-    hello: 'Hello',
-    nested: {
-      world: 'World'
-    }
-  },
-
-  'pt-br': { // locale
-    hello: 'Olá',
-    nested: {
-      world: 'Mundo'
-    }
-  }
-}
 ```
 
-Then on your instance creation:
-
-```js
-const message = require('./messages.js');
-
 const i18n = i18nCreate({
-  messages: messages,
-  defaultLocale: 'pt-br'
+  defaultLocale: 'pt-br', // required, set the default locale
+  warn: false, // optional // show warns on fallbacks and errors
+  allowFallback: true, // if no fallback
+  messages: {}, // your locales and messages
 });
 ```
 
-# Options
+# Methods
+
+#### t()
+
+Ask for translations. Ex:
+
+```js
+i18n.t('hello'); // will output "Hello"
+```
+
+#### locale()
+
+Return the current locale being used on instance
+
+```js
+i18n.locale(); // will output "en"
+```
+
+#### setOptions()
+
+Overrides options on the fly. Example for change default locale and warn levels:
+
+```js
+i18n.setOptions({
+  warn: true,
+  defaultLocale: 'pt-br',
+});
+```
 
 # Development
+
+The sources are in `src` folder. Start with `npm install`, then: 
+
+#### Build
+
+```
+npm run build
+```
+
+#### Test
+
+```
+npm run test
+```
