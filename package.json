@@ -16,7 +16,7 @@
     "translation",
     "translate",
     "rest",
-    "api",
+    "api"
   ],
   "scripts": {
     "test": "jest",
