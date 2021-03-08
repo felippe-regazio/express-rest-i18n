@@ -62,6 +62,52 @@ app.get('*', (req, res) => {
 });
 ```
 
+# The t() method
+
+The `i18n` instance contains the `t()` method which does the translations for you. When you add the `i18n.middleware` to your express, the `t()` method is exposed on your `req` and `res` objects. This is the `t()` method signature
+
+```js
+function t(keypath: string, locale?:string) : str | any
+```
+
+#### The t() instance method
+
+When using the t() method on your i18n instance:
+
+```js
+i18n.t('hello'); // will output "Hello"
+i18n.t('hello', 'pt-br'); // will outout "Olá"
+```
+
+#### The t() middleware method
+
+When inside the express (as a middleware), the t() method is exposed on your req and res objects.
+The locale is automatically infered from the request, or the defaultLocale will be used:
+
+```js
+app.get('*', (req, res) => {
+  /*
+    if the request doesnt specify any locale, the const hello will be "Hello",
+    if specify a locale, the result will be in the given local, for pt-br
+    for example, would be "Olá", for a non-existent locale or if the given locale
+    doesnt contains the "hello" key, it will be fallbacked to the defaultLocale
+  */
+  const hello = res.i18n.t('hello');
+
+  res.status(200).send(hello); // will output hello  
+});
+```
+
+You can also force a locale even using it as a middleware
+
+```js
+app.get('*', (req, res) => {
+  const hello = res.i18n.t('hello', 'pt-br'); // will return "Olá" no matter the request locale
+
+  res.status(200).send(hello); 
+});
+```
+
 # Locales
 
 If you dont pass any locale, your `defaultLocale` will be used as the translation language. Anyway, you can specify a locale to your API in 3 different ways. When specifying the locale on your request you dont need to do anything server-side, the `i18n.t()` will automatically handle the response using the locale passed via request.
@@ -88,7 +134,7 @@ fetch('http://api-address.com/?locale=en')
   .catch(err => { ... });
 ```
 
-### Body
+#### Body
 
 You can also pass the desired locale on your request body. You must be using `body-parser` on your express to use this option:
 
@@ -111,7 +157,7 @@ The `defaultLocale` will be used as a fallback when you:
 
 # Usage
 
-#### Locales and Messages
+#### Messages
 
 Your `messages` are passed to the `i18n instance` using the `messages` key on options.
 A common approach is to put the messages in a separated file. In the messages object, 
@@ -145,4 +191,8 @@ const i18n = i18nCreate({
   messages: messages,
   defaultLocale: 'pt-br'
 });
-``` 
+```
+
+# Options
+
+# Development
