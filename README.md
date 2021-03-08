@@ -213,8 +213,7 @@ The `defaultLocale` will be used as a fallback when you:
 
 You can pass the following options to the instance:
 
-```
-
+```js
 const i18n = i18nCreate({
   defaultLocale: 'pt-br', // required, set the default locale
   warn: false, // optional // show warns on fallbacks and errors
