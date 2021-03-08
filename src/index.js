@@ -104,6 +104,7 @@ module.exports = function i18n (options = {}) {
   
     const i18nApi = {
       locale,
+      setOptions,
 
       t(keyref, _locale = locale) {
         return translate(keyref, _locale);

@@ -192,3 +192,81 @@ test('Test i18n middleware POST with setted locale on body to non-default "en"',
 
   done();
 });
+
+test('Test request with a non-existent locale must fallback to default', async done => {
+  await assertRequests({
+    method: 'get',
+    query: 'locale=asdf',
+    assert: ptBrAsserts,
+    each: (returned, expected) => {
+      expect(returned).toEqual(expected);
+    }
+  });
+
+  await assertRequests({
+    method: 'post',
+    data: { locale: 'asdf' },
+    assert: ptBrAsserts,
+    each: (returned, expected) => {
+      expect(returned).toEqual(expected);
+    }
+  });  
+
+  await assertRequests({
+    method: 'get',
+    localeHeader: 'asdf', 
+    assert: ptBrAsserts,
+    each: (returned, expected) => {
+      expect(returned).toEqual(expected);
+    }
+  });
+
+  await assertRequests({
+    method: 'post',
+    localeHeader: 'asdf',
+    assert: ptBrAsserts,
+    each: (returned, expected) => {
+      expect(returned).toEqual(expected);
+    }
+  });
+
+  done();
+});
+
+test('Test default locale change and non-persistent custom locales on requests', async done => {
+  await assertRequests({
+    method: 'get',
+    query: 'defaultLocale=en',
+    assert: enAsserts,
+    each: (returned, expected) => {
+      expect(returned).toEqual(expected);
+    }
+  });
+
+  await assertRequests({
+    method: 'post',
+    assert: enAsserts,
+    each: (returned, expected) => {
+      expect(returned).toEqual(expected);
+    }
+  });
+
+  await assertRequests({
+    method: 'get',
+    query: 'locale=pt-br',
+    assert: ptBrAsserts,
+    each: (returned, expected) => {
+      expect(returned).toEqual(expected);
+    }
+  });
+
+  await assertRequests({
+    method: 'post',
+    assert: enAsserts,
+    each: (returned, expected) => {
+      expect(returned).toEqual(expected);
+    }
+  });  
+
+  done();
+});
