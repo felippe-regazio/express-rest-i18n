@@ -13,7 +13,7 @@ npm install express-rest-i18n
 
 #### 2. Create the i18n instance.
 
-You can also create a module that exports you instance, if you prefer.
+You can also create a module that exports your instance, if you prefer.
 
 ```js
 const i18nCreate = require('express-rest-i18n');
