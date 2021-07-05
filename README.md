@@ -164,7 +164,7 @@ const i18n = i18nCreate({
 
 # Response Locales
 
-If you dont pass any locale, your `defaultLocale` will be used as the translation language. Anyway, you can specify a locale to your API in 3 different ways. When specifying the locale on your request you dont need to do anything server-side, the `i18n.t()` will automatically handle the response using the locale passed via request.
+You can specify a locale when requesting your API in 3 different ways, if you dont pass any locale, your `defaultLocale` will be used as the translation language. When specifying the locale on your request you dont need to do anything server-side, the `i18n.t()` will automatically handle the response using the locale passed via request. So, when asking something from your API, you can tell which language you want in the following ways:
 
 #### Headers
 
