@@ -50,7 +50,7 @@ const app = express();
 app.use(i18n.middleware);
 ```
 
-Attention: if are using `body-parser`, add the i18n middleware AFTER the body parser addition, so the i18n will recognize it.
+Attention: if you are using `body-parser`, add the i18n middleware AFTER the body parser addition, so the i18n will recognize it.
 
 #### 5. Use it
 
