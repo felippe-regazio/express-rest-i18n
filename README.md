@@ -76,7 +76,7 @@ When using the t() method on your i18n instance:
 
 ```js
 i18n.t('hello'); // will output "Hello"
-i18n.t('hello', 'pt-br'); // will outout "Olá"
+i18n.t('hello', 'pt-br'); // will output "Olá"
 ```
 
 #### The t() middleware method
@@ -154,7 +154,7 @@ module.exports = {
 Then on your instance creation:
 
 ```js
-const message = require('./messages.js');
+const messages = require('./messages.js');
 
 const i18n = i18nCreate({
   messages: messages,
