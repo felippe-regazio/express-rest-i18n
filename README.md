@@ -67,7 +67,7 @@ app.get('*', (req, res) => {
 The `i18n` instance contains the `t()` method which does the translations for you. When you add the `i18n.middleware` to your express, the `t()` method is exposed on your `req` and `res` objects. This is the `t()` method signature
 
 ```js
-function t(keypath: string, locale?:string) : str | any
+function t(keypath: string, locale?:string) : str
 ```
 
 #### The t() instance method
